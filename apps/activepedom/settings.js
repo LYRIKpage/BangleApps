@@ -10,6 +10,7 @@
   let s = {
     'cMaxTime' : 1100,
     'cMinTime' : 240,
+    'cMaxDiff' : 50,
     'stepThreshold' : 30,
     'intervalResetActive' : 30000,
     'stepSensitivity' : 80,
@@ -50,6 +51,13 @@
       min: 0,
       max: 500,
       step: 10,
+      onchange: save('cMinTime'),
+    },
+    'Step diff (%)': {
+      value: s.cMaxDiff,
+      min: 0,
+      max: 100,
+      step: 1,
       onchange: save('cMinTime'),
     },
     'Step threshold': {

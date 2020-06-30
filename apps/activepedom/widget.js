@@ -11,6 +11,7 @@
   var stepGoalBarLength = 0; //length og progress bar   
   var lastUpdate = new Date(); //used to reset counted steps on new day
   var width = 46; //width of widget
+  const cMaxDiff = 50;
 
   //used for statistics and debugging
   var stepsTooShort = 0; 
@@ -101,17 +102,22 @@
   }
 
   function calcSteps() {
+    var prevDiff = stepTimeDiff;
     stopTimeStep = new Date(); //stop time after each step
     stepTimeDiff = stopTimeStep - startTimeStep; //time between steps in milliseconds
     startTimeStep = new Date(); //start time again
 
     //Remove step if time between first and second step is too long
-    if (stepTimeDiff >= setting('cMaxTime')) { //milliseconds
+    if (stepTimeDiff >= setting('cMaxTime')
+    	|| stepTimeDiff > prevDiff*(100+setting('cMaxDiff'))*0.01
+    ) { //milliseconds
       stepsTooLong++; //count steps which are not counted, because time too long
       steps--;
     }
     //Remove step if time between first and second step is too short
-    if (stepTimeDiff <= setting('cMinTime')) { //milliseconds
+    if (stepTimeDiff <= setting('cMinTime')
+    	|| stepTimeDiff < prevDiff/((100+setting('cMaxDiff'))*0.01)
+    ) { //milliseconds
       stepsTooShort++; //count steps which are not counted, because time too short
       steps--;
     }
